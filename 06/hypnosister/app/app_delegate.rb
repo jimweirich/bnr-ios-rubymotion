@@ -27,13 +27,17 @@ class Box
       @origin = Point.new(frame_or_rect.origin.x, frame_or_rect.origin.y)
       @size   = Point.new(frame_or_rect.size.width, frame_or_rect.size.height)
     else
-      @origin = Point.new(frame[0][0], frame[0][1])
-      @size   = Point.new(frame[1][0], frame[1][1])
+      @origin = Point.new(frame_or_rect[0][0], frame_or_rect[0][1])
+      @size   = Point.new(frame_or_rect[1][0], frame_or_rect[1][1])
     end
   end
 
   def center
     @origin + @size * 0.5
+  end
+
+  def *(scaler)
+    self.class.new([[x, y], [width*scaler, height*scaler]])
   end
 
   def x
@@ -57,7 +61,11 @@ class Box
   end
 
   def to_frame
-    [[x, y], [size, height]]
+    [[x, y], [width, height]]
+  end
+
+  def inspect
+    "<Box (#{x},#{y}) / (#{width}x#{height})>"
   end
 end
 
@@ -129,8 +137,13 @@ class AppDelegate
     @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
     @window.backgroundColor = UIColor.whiteColor
 
-    view = HypnosisView.alloc.initWithFrame(UIScreen.mainScreen.bounds)
-    @window.addSubview(view)
+    box = Box.new(@window.bounds)
+    scroll_view = UIScrollView.alloc.initWithFrame(box.to_frame)
+    @window.addSubview(scroll_view)
+
+    view = HypnosisView.alloc.initWithFrame((box*2).to_frame)
+    scroll_view.addSubview(view)
+    scroll_view.setContentSize(view.bounds.size)
 
     if view.becomeFirstResponder
       NSLog("HypnosisView became the first responder")
