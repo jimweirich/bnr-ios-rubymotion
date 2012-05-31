@@ -154,6 +154,8 @@ class AppDelegate
     @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
     @window.backgroundColor = UIColor.whiteColor
 
+    UIApplication.sharedApplication.setStatusBarHidden(true, withAnimation:UIStatusBarAnimationFade)
+
     box = Box.new(@window.bounds)
     scroll_view = UIScrollView.alloc.initWithFrame(box.to_frame)
     @window.addSubview(scroll_view)
