@@ -126,9 +126,19 @@ class HypnosisView < UIView
 
     offset = CGSizeMake(4,3)
     color = UIColor.darkGrayColor.CGColor
-    CGContextSetShadowWithColor(ctx, offset, 2.0, color)
+    save_graphics_context(ctx) do
+      CGContextSetShadowWithColor(ctx, offset, 2.0, color)
+      text.drawInRect(text_rect, withFont:font)
+    end
 
-    text.drawInRect(text_rect, withFont:font)
+    delta = [box.height, box.width].min / 15.0
+    UIColor.greenColor.setStroke
+    CGContextSetLineWidth(ctx, 3)
+    CGContextMoveToPoint(ctx, center.x, center.y-delta)
+    CGContextAddLineToPoint(ctx, center.x, center.y+delta)
+    CGContextMoveToPoint(ctx, center.x-delta, center.y)
+    CGContextAddLineToPoint(ctx, center.x+delta, center.y)
+    CGContextStrokePath(ctx)
   end
 
   def bump_color
@@ -138,6 +148,13 @@ class HypnosisView < UIView
 
   def canBecomeFirstResponder
     true
+  end
+
+  def save_graphics_context(ctx)
+    CGContextSaveGState(ctx)
+    yield
+  ensure
+    CGContextRestoreGState(ctx)
   end
 
   def motionBegan(motion, withEvent:event)
