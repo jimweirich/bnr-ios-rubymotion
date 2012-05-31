@@ -17,6 +17,10 @@ class Point
   def *(scaler)
     Point.new(scaler*x, scaler*y)
   end
+
+  def to_size
+    CGSizeMake(x, y)
+  end
 end
 
 class Box
@@ -36,8 +40,20 @@ class Box
     @origin + @size * 0.5
   end
 
+  def translate(delta_x, delta_y)
+    self.class.new([[x+delta_x, y+delta_y], [width, height]])
+  end
+
+  def scale(scale_x, scale_y)
+    self.class.new([[x, y], [scale_x*width, scale_y*height]])
+  end
+
+  def +(point)
+    translate(point.x, point.y)
+  end
+
   def *(scaler)
-    self.class.new([[x, y], [width*scaler, height*scaler]])
+    scale(scaler, scaler)
   end
 
   def x
@@ -141,9 +157,14 @@ class AppDelegate
     scroll_view = UIScrollView.alloc.initWithFrame(box.to_frame)
     @window.addSubview(scroll_view)
 
-    view = HypnosisView.alloc.initWithFrame((box*2).to_frame)
+    view = HypnosisView.alloc.initWithFrame(box.to_frame)
     scroll_view.addSubview(view)
-    scroll_view.setContentSize(view.bounds.size)
+
+    new_box = box + Point.new(box.width, 0)
+    view2 = HypnosisView.alloc.initWithFrame(new_box.to_frame)
+    scroll_view.addSubview(view2)
+
+    scroll_view.setContentSize(box.scale(2,1).size.to_size)
 
     if view.becomeFirstResponder
       NSLog("HypnosisView became the first responder")
