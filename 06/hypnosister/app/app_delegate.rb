@@ -149,6 +149,7 @@ class HypnosisView < UIView
 end
 
 class AppDelegate
+
   def application(application, didFinishLaunchingWithOptions:launchOptions)
     @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
     @window.backgroundColor = UIColor.whiteColor
@@ -157,16 +158,15 @@ class AppDelegate
     scroll_view = UIScrollView.alloc.initWithFrame(box.to_frame)
     @window.addSubview(scroll_view)
 
-    view = HypnosisView.alloc.initWithFrame(box.to_frame)
-    scroll_view.addSubview(view)
+    @view = HypnosisView.alloc.initWithFrame(box.to_frame)
+    scroll_view.addSubview(@view)
 
-    new_box = box + Point.new(box.width, 0)
-    view2 = HypnosisView.alloc.initWithFrame(new_box.to_frame)
-    scroll_view.addSubview(view2)
+    scroll_view.setContentSize(box.size.to_size)
+    scroll_view.setMinimumZoomScale(1.0)
+    scroll_view.setMaximumZoomScale(5.0)
+    scroll_view.delegate = self
 
-    scroll_view.setContentSize(box.scale(2,1).size.to_size)
-
-    if view.becomeFirstResponder
+    if @view.becomeFirstResponder
       NSLog("HypnosisView became the first responder")
     else
       NSLog("HypnosisView failed to became the first responder")
@@ -174,5 +174,9 @@ class AppDelegate
 
     @window.makeKeyAndVisible
     true
+  end
+
+  def viewForZoomingInScrollView(scroll_view)
+    @view
   end
 end
