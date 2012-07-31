@@ -9,18 +9,26 @@ class ItemsViewController < UITableViewController
     self
   end
 
-
   def tableView(table_view, numberOfRowsInSection: section)
-    ItemStore.shared_store.items.size
+    ItemStore.shared_store.size
   end
 
   def tableView(table_view, cellForRowAtIndexPath: path)
-    cell =
-      table_view.dequeueReusableCellWithIdentifier("UITableViewCell") ||
-      UITableViewCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier: "UITableViewCell")
-    p = ItemStore.shared_store.items[path.row]
+    cell = reuse_cell(table_view) || new_cell(table_view)
+    p = ItemStore.shared_store[path]
     cell.textLabel.text = p.description
     cell
   end
-end
 
+  private
+
+  REUSE_ID = "UITableViewCell"
+
+  def reuse_cell(table_view)
+    table_view.dequeueReusableCellWithIdentifier(REUSE_ID)
+  end
+
+  def new_cell(table_view)
+    UITableViewCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier: REUSE_ID)
+  end
+end

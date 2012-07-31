@@ -8,13 +8,21 @@ class ItemStore
     self
   end
 
-  def items
-    @items
-  end
-
   def create_item
     item = Item.randomItem
-    items << item
+    self << item
     item
+  end
+
+  def size
+    @items.size
+  end
+
+  def [](path)
+    @items[path.row]
+  end
+
+  def <<(item)
+    @items << item
   end
 end
