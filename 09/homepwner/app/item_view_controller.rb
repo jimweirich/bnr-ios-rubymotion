@@ -5,7 +5,7 @@ class ItemsViewController < UITableViewController
 
   def init
     initWithStyle(UITableViewStyleGrouped)
-    5.times { ItemStore.shared_store.create_item }
+    50.times { ItemStore.shared_store.create_item }
     self
   end
 
@@ -15,7 +15,9 @@ class ItemsViewController < UITableViewController
   end
 
   def tableView(table_view, cellForRowAtIndexPath: path)
-    cell = UITableViewCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier: "UITableViewCell")
+    cell =
+      table_view.dequeueReusableCellWithIdentifier("UITableViewCell") ||
+      UITableViewCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier: "UITableViewCell")
     p = ItemStore.shared_store.items[path.row]
     cell.textLabel.text = p.description
     cell
