@@ -1,18 +1,4 @@
-class HeavyViewController < UIViewController
-  def loadView
-    self.view = UIImageView.alloc.init
-  end
-
-  def viewDidLoad
-    view.image = UIImage.imageNamed("joeeye.jpg")
-  end
-
-  def shouldAutorotateToInterfaceOrientation(orientation)
-    # NOTE: The UIInterfaceOrientationIsLandscape function is actually
-    # a macro and not available in Ruby (ATM).
-    landscape?(orientation) || right_side_up?(orientation)
-  end
-
+module Orientation
   def landscape?(orientation)
     landscape_left?(orientation) || landscape_right?(orientation)
   end
@@ -38,13 +24,30 @@ class HeavyViewController < UIViewController
   end
 end
 
+class HeavyViewController < UIViewController
+  include Orientation
+
+  def loadView
+    self.view = UIImageView.alloc.init
+  end
+
+  def viewDidLoad
+    view.image = UIImage.imageNamed("joeeye.jpg")
+  end
+
+  def shouldAutorotateToInterfaceOrientation(orientation)
+    # NOTE: The UIInterfaceOrientationIsLandscape function is actually
+    # a macro and not available in Ruby (ATM).
+    landscape?(orientation) || right_side_up?(orientation)
+  end
+end
+
 class AppDelegate
   def application(application, didFinishLaunchingWithOptions:launchOptions)
     @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
     device = UIDevice.currentDevice
     device.beginGeneratingDeviceOrientationNotifications
     nc = NSNotificationCenter.defaultCenter
-    NSLog("Adding Observer")
     nc.addObserver(self,
       selector: 'orientationChanged:',
       name: UIDeviceOrientationDidChangeNotification,
