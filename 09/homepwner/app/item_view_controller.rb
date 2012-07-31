@@ -5,7 +5,7 @@ class ItemsViewController < UITableViewController
 
   def init
     initWithStyle(UITableViewStyleGrouped)
-    50.times { ItemStore.shared_store.create_item }
+    20.times { ItemStore.shared_store.create_item }
     self
   end
 

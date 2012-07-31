@@ -15,14 +15,34 @@ class ItemStore
   end
 
   def size
-    @items.size
+    @items.size + 1
   end
 
   def [](path)
-    @items[path.row]
+    if path.row >= @items.size
+      last_item
+    else
+      @items[path.row]
+    end
   end
 
   def <<(item)
     @items << item
+  end
+
+  private
+
+  class LastItem < Item
+    def initialize
+      super
+    end
+    def description
+      "No More Items"
+    end
+  end
+
+
+  def last_item
+    @last_item ||= LastItem.new
   end
 end
