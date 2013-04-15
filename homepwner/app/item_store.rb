@@ -25,4 +25,8 @@ class ItemStore
   def <<(item)
     @items << item
   end
+
+  def index(item)
+    @items.index(item)
+  end
 end
