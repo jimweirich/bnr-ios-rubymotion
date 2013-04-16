@@ -1,10 +1,11 @@
 class AppDelegate
   def application(application, didFinishLaunchingWithOptions:launchOptions)
     @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
-    @window.rootViewController = ItemsViewController.alloc.init
-    @window.backgroundColor = UIColor.whiteColor
+    items_view_controller = ItemsViewController.alloc.init
+    nav_controller = UINavigationController.alloc.
+      initWithRootViewController(items_view_controller)
+    @window.rootViewController = nav_controller
     @window.rootViewController.wantsFullScreenLayout = true
-#    @window.rootViewController.data_source = recipes
     @window.makeKeyAndVisible
     true
   end

@@ -9,8 +9,9 @@ class ItemsViewController < UITableViewController
     view.bounds = CGRectMake(20, 0, 320, 480)
   end
 
-  def header_view
-    @header_view ||= make_header_view
+  def viewWillAppear(animated)
+    super
+    tableView.reloadData
   end
 
   # Actions
@@ -65,6 +66,19 @@ class ItemsViewController < UITableViewController
     ItemStore.shared_store.move(sourceIndexPath.row, destIndexPath.row)
   end
 
+  def tableView(tv, didSelectRowAtIndexPath: path)
+    item = ItemStore.shared_store[path]
+    detail_view_controller = DetailViewController.alloc.init
+    detail_view_controller.set_item(item)
+    navigationController.pushViewController(detail_view_controller, animated: true)
+  end
+
+  # Other Stuff
+
+  def header_view
+    @header_view ||= make_header_view
+  end
+
   private
 
   REUSE_ID = "UITableViewCell"
@@ -79,14 +93,14 @@ class ItemsViewController < UITableViewController
 
   def make_header_view
     header_view = UIView.alloc.init
-    header_view.frame = CGRectMake(0, 20, 180, 50)
+    header_view.frame = CGRectMake(0, 0, 180, 30)
 
     @edit_button = make_button("Edit", "toggleEditingMode:")
-    @edit_button.frame = CGRectMake(10, 20, 150, 30)
+    @edit_button.frame = CGRectMake(10, 0, 150, 30)
     header_view.addSubview(@edit_button)
 
     @delete_button = make_button("New", "addNewItem:")
-    @delete_button.frame = CGRectMake(160, 20, 150, 30)
+    @delete_button.frame = CGRectMake(160, 0, 150, 30)
     header_view.addSubview(@delete_button)
 
     header_view
