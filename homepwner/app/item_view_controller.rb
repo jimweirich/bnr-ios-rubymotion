@@ -9,23 +9,11 @@ class ItemsViewController < UITableViewController
     view.bounds = CGRectMake(20, 0, 320, 480)
   end
 
-  def make_header_view
-    header_view = UIView.alloc.init
-    header_view.frame = CGRectMake(0, 20, 180, 50)
-    button = UIButton.buttonWithType(UIButtonTypeRoundedRect)
-    button = UIButton.buttonWithType(UIButtonTypeRoundedRect)
-    button.setTitle("Edit", forState:UIControlStateNormal)
-    button.addTarget(self, action: "toggleEditingMode:", forControlEvents:UIControlEventTouchUpInside)
-    button.frame = CGRectMake(10, 20, 150, 30)
-    header_view.addSubview(button)
-    button2 = UIButton.buttonWithType(UIButtonTypeRoundedRect)
-    button2 = UIButton.buttonWithType(UIButtonTypeRoundedRect)
-    button2.setTitle("New", forState:UIControlStateNormal)
-    button2.addTarget(self, action: "addNewItem:", forControlEvents:UIControlEventTouchUpInside)
-    button2.frame = CGRectMake(160, 20, 150, 30)
-    header_view.addSubview(button2)
-    header_view
+  def header_view
+    @header_view ||= make_header_view
   end
+
+  # Actions
 
   def addNewItem(sender)
     item = ItemStore.shared_store.create_item
@@ -44,16 +32,14 @@ class ItemsViewController < UITableViewController
     end
   end
 
-  def headerView
-    @header_view ||= make_header_view
-  end
+  # Table View Protocol
 
   def tableView(tv, viewForHeaderInSection: sec)
-    headerView
+    header_view
   end
 
   def tableView(tv, heightForHeaderInSection: sec)
-    headerView.bounds.size.height
+    header_view.bounds.size.height
   end
 
   def tableView(table_view, numberOfRowsInSection: section)
@@ -89,5 +75,27 @@ class ItemsViewController < UITableViewController
 
   def new_cell(table_view)
     UITableViewCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier: REUSE_ID)
+  end
+
+  def make_header_view
+    header_view = UIView.alloc.init
+    header_view.frame = CGRectMake(0, 20, 180, 50)
+
+    @edit_button = make_button("Edit", "toggleEditingMode:")
+    @edit_button.frame = CGRectMake(10, 20, 150, 30)
+    header_view.addSubview(@edit_button)
+
+    @delete_button = make_button("New", "addNewItem:")
+    @delete_button.frame = CGRectMake(160, 20, 150, 30)
+    header_view.addSubview(@delete_button)
+
+    header_view
+  end
+
+  def make_button(title, action)
+    button = UIButton.buttonWithType(UIButtonTypeRoundedRect)
+    button.setTitle(title, forState:UIControlStateNormal)
+    button.addTarget(self, action: action, forControlEvents:UIControlEventTouchUpInside)
+    button
   end
 end
