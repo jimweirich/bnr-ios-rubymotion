@@ -1,7 +1,12 @@
 class ItemsViewController < UITableViewController
   def init
     initWithStyle(UITableViewStyleGrouped)
-     self
+    navigationItem.title = "Homepwner"
+    right_button = UIBarButtonItem.alloc.
+      initWithBarButtonSystemItem(UIBarButtonSystemItemAdd, target: self, action: "addNewItem:")
+    navigationItem.setRightBarButtonItem(right_button)
+    navigationItem.setLeftBarButtonItem(editButtonItem)
+    self
   end
 
   def loadView
@@ -35,14 +40,6 @@ class ItemsViewController < UITableViewController
 
   # Table View Protocol
 
-  def tableView(tv, viewForHeaderInSection: sec)
-    header_view
-  end
-
-  def tableView(tv, heightForHeaderInSection: sec)
-    header_view.bounds.size.height
-  end
-
   def tableView(table_view, numberOfRowsInSection: section)
     ItemStore.shared_store.size
   end
@@ -73,12 +70,6 @@ class ItemsViewController < UITableViewController
     navigationController.pushViewController(detail_view_controller, animated: true)
   end
 
-  # Other Stuff
-
-  def header_view
-    @header_view ||= make_header_view
-  end
-
   private
 
   REUSE_ID = "UITableViewCell"
@@ -89,27 +80,5 @@ class ItemsViewController < UITableViewController
 
   def new_cell(table_view)
     UITableViewCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier: REUSE_ID)
-  end
-
-  def make_header_view
-    header_view = UIView.alloc.init
-    header_view.frame = CGRectMake(0, 0, 180, 30)
-
-    @edit_button = make_button("Edit", "toggleEditingMode:")
-    @edit_button.frame = CGRectMake(10, 0, 150, 30)
-    header_view.addSubview(@edit_button)
-
-    @delete_button = make_button("New", "addNewItem:")
-    @delete_button.frame = CGRectMake(160, 0, 150, 30)
-    header_view.addSubview(@delete_button)
-
-    header_view
-  end
-
-  def make_button(title, action)
-    button = UIButton.buttonWithType(UIButtonTypeRoundedRect)
-    button.setTitle(title, forState:UIControlStateNormal)
-    button.addTarget(self, action: action, forControlEvents:UIControlEventTouchUpInside)
-    button
   end
 end
