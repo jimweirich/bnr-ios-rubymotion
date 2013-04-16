@@ -1,12 +1,17 @@
 class ItemsViewController < UITableViewController
   def init
     initWithStyle(UITableViewStyleGrouped)
-    self
+     self
+  end
+
+  def loadView
+    super
+    view.bounds = CGRectMake(20, 0, 320, 480)
   end
 
   def make_header_view
     header_view = UIView.alloc.init
-    header_view.frame = CGRectMake(0, 0, 180, 50)
+    header_view.frame = CGRectMake(0, 20, 180, 50)
     button = UIButton.buttonWithType(UIButtonTypeRoundedRect)
     button = UIButton.buttonWithType(UIButtonTypeRoundedRect)
     button.setTitle("Edit", forState:UIControlStateNormal)
@@ -31,10 +36,10 @@ class ItemsViewController < UITableViewController
 
   def toggleEditingMode(sender)
     if isEditing
-      sender.setTitle("Done", forState: UIControlStateNormal)
+      sender.setTitle("Edit", forState: UIControlStateNormal)
       setEditing(false, animated: true)
     else
-      sender.setTitle("Edit", forState: UIControlStateNormal)
+      sender.setTitle("Done", forState: UIControlStateNormal)
       setEditing(true, animated: true)
     end
   end
