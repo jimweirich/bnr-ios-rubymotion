@@ -67,6 +67,18 @@ class ItemsViewController < UITableViewController
     cell
   end
 
+  def tableView(tv, commitEditingStyle: style, forRowAtIndexPath: path)
+    if style == UITableViewCellEditingStyleDelete
+      item = ItemStore.shared_store[path]
+      ItemStore.shared_store.remove(item)
+      tv.deleteRowsAtIndexPaths([path], withRowAnimation: UITableViewRowAnimationFade)
+    end
+  end
+
+  def tableView(tv, moveRowAtIndexPath: sourceIndexPath, toIndexPath: destIndexPath)
+    ItemStore.shared_store.move(sourceIndexPath.row, destIndexPath.row)
+  end
+
   private
 
   REUSE_ID = "UITableViewCell"

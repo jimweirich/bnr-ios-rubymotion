@@ -26,6 +26,15 @@ class ItemStore
     @items << item
   end
 
+  def remove(item)
+    @items.delete_if { |it| it.equal?(item) }
+  end
+
+  def move(from, to)
+    item = @items.delete_at(from)
+    @items.insert(to, item)
+  end
+
   def index(item)
     @items.index(item)
   end
