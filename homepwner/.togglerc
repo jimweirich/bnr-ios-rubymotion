@@ -1,0 +1,7 @@
+(add-to-list
+ 'toggle-mapping-styles
+ '(rubymotion
+   ("spec/\\1_spec.rb" . "app/\\1.rb")
+   ("\\1_spec.rb"      . "\\1.rb")))
+
+(buffer-toggle-style 'rubymotion)
