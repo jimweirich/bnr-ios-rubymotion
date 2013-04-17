@@ -40,14 +40,14 @@ class ItemsViewController < UITableViewController
 
   # Table View Protocol
 
-  def tableView(table_view, numberOfRowsInSection: section)
+  def tableView(tv, numberOfRowsInSection: section)
     ItemStore.shared_store.size
   end
 
-  def tableView(table_view, cellForRowAtIndexPath: path)
-    cell = reuse_cell(table_view) || new_cell(table_view)
-    p = ItemStore.shared_store[path]
-    cell.textLabel.text = p.description
+  def tableView(tv, cellForRowAtIndexPath: path)
+    cell = reuse_cell(tv) || new_cell(tv)
+    item = ItemStore.shared_store[path]
+    cell.textLabel.text = item.description
     cell
   end
 
