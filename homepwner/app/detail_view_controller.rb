@@ -12,7 +12,6 @@ class DetailViewController < UIViewController
   end
 
   def viewDidLoad
-    @nameField = "BOB"
     make_detail_view
   end
 

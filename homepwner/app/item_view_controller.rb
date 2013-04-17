@@ -23,7 +23,7 @@ class ItemsViewController < UITableViewController
 
   def addNewItem(sender)
     item = ItemStore.shared_store.create_item
-    row = ItemStore.shared_store.index(item)
+    row  = ItemStore.shared_store.index(item)
     path = NSIndexPath.indexPathForRow(row, inSection: 0)
     tableView.insertRowsAtIndexPaths([path], withRowAnimation: UITableViewRowAnimationTop)
   end
