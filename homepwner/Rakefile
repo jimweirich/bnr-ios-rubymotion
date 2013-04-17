@@ -9,3 +9,8 @@ Motion::Project::App.setup do |app|
   app.name = 'homepwner'
   app.provisioning_profile = PROVISIONING_FILE
 end
+
+task :test_unit_format do
+  ENV["output"] = "test_unit"
+end
+task :tu => [:test_unit_format, :spec]

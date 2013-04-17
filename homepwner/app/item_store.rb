@@ -1,15 +1,17 @@
 class ItemStore
+  include Enumerable
+
   def self.shared_store
-    @shared_store ||= allocWithZone(nil).init
+    @shared_store ||= new
   end
 
-  def init
+  def initialize
     @items = []
     self
   end
 
   def create_item
-    item = Item.randomItem
+    item = Item.random_item
     self << item
     item
   end
@@ -37,5 +39,9 @@ class ItemStore
 
   def index(item)
     @items.index(item)
+  end
+
+  def each(&block)
+    @items.each(&block)
   end
 end

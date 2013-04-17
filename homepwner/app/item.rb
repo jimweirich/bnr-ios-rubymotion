@@ -11,7 +11,7 @@ class Item
     "#{'  '*indent}#{item_name} (#{serial_number}): $%0.2f" % value_in_dollars
   end
 
-  def self.randomItem
+  def self.random_item
     adjectives = ['Fluffy', 'Rusty', 'Shiny', 'Bulky', 'Nasty']
     nouns      = ['Bear', 'Spork', 'Mac', 'Tea', 'Coffee', 'Maté']
     name       = "#{adjectives.sample} #{nouns.sample}"
