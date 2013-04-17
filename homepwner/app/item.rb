@@ -7,8 +7,8 @@ class Item
     @date_created = Time.now
   end
 
-  def to_s(indent = 0)
-    "#{'  '*indent}#{item_name} (#{serial_number}): $%0.2f" % value_in_dollars
+  def to_s
+    "#{item_name} (#{serial_number}): $%0.2f" % value_in_dollars
   end
 
   def self.random_item
