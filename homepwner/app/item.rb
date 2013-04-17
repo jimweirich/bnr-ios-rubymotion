@@ -2,8 +2,10 @@
 class Item
   attr_accessor :item_name, :serial_number, :value_in_dollars, :date_created
 
-  def initialize(item_name = "Item", value_in_dollars = 0, serial_number = "")
-    @item_name, @serial_number, @value_in_dollars = item_name, serial_number, value_in_dollars
+  def initialize(item_name="Item", value_in_dollars=0, serial_number="")
+    @item_name = item_name
+    @value_in_dollars = value_in_dollars
+    @serial_number = serial_number
     @date_created = Time.now
   end
 
